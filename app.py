@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, send_file
 import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -22,15 +23,17 @@ def upload():
         return 'No selected video', 400
 
     filename = secure_filename(video.filename)
-    input_path = os.path.join('uploads', filename)
-    output_path = os.path.join('processed', filename)
+    input_path = os.path.join(UPLOAD_FOLDER, filename)
+    output_filename = "no_watermark_" + filename
+    output_path = os.path.join(PROCESSED_FOLDER, output_filename)
 
     video.save(input_path)
 
-    # Process with AI here — currently missing or placeholder
-    ai_remove_watermark(input_path, output_path)
+    # FFmpeg watermark removal using delogo filter
+    os.system(f"ffmpeg -y -i {input_path} -vf \"delogo=x=20:y=20:w=100:h=50:show=0\" {output_path}")
 
     return send_file(output_path, as_attachment=True)
-def upload():
-    video = request.files['video']
-    if video:
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
