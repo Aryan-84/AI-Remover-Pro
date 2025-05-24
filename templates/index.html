@@ -2,15 +2,12 @@
 <html>
 <head>
     <title>AI Remover Pro</title>
-    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>AI Remover Pro</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="video" required>
-            <button type="submit">Remove Watermark</button>
-        </form>
-    </div>
+<body style="background-color: black; color: white; text-align: center; margin-top: 100px;">
+    <h1>AI Remover Pro</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" required>
+        <button type="submit">Remove Watermark</button>
+    </form>
 </body>
 </html>
