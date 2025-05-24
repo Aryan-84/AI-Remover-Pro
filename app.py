@@ -14,6 +14,24 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    if 'video' not in request.files:
+        return 'No video uploaded', 400
+
+    video = request.files['video']
+    if video.filename == '':
+        return 'No selected video', 400
+
+    filename = secure_filename(video.filename)
+    input_path = os.path.join('uploads', filename)
+    output_path = os.path.join('processed', filename)
+
+    video.save(input_path)
+
+    # Process with AI here — currently missing or placeholder
+    ai_remove_watermark(input_path, output_path)
+
+    return send_file(output_path, as_attachment=True)
+def upload():
     video = request.files['video']
     if video:
         filepath = os.path.join(UPLOAD_FOLDER, video.filename)
