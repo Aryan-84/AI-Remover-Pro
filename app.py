@@ -34,17 +34,3 @@ def upload():
 def upload():
     video = request.files['video']
     if video:
-        filepath = os.path.join(UPLOAD_FOLDER, video.filename)
-        video.save(filepath)
-
-        # Placeholder AI logic
-        processed_path = os.path.join(PROCESSED_FOLDER, "no_watermark_" + video.filename)
-        os.system(f"ffmpeg -i {filepath} -vf 'delogo=x=20:y=20:w=100:h=50:show=0' {processed_path}")
-
-        return send_file(processed_path, as_attachment=True)
-    return "Upload failed"
-
-if __name__ == '__main__':
-    import os
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
